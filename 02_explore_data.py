@@ -4,14 +4,6 @@ import matplotlib.patches as patches
 import pandas as pd
 import numpy as np
 
-training_annotations = pd.read_csv('data/trainingset_annotations.csv')
-training_annotations.columns = [i.strip() for i in training_annotations.columns]
-
-img_name = training_annotations.sample(1)['image_name'].values[0]
-img_path = f'data/trainingset/{img_name}'
-img = cv2.imread(img_path, cv2.IMREAD_COLOR)
-img_details = training_annotations.query('image_name == @img_name')
-xmin = img_details['xmin']
 
 def plot_image(x):
     """Plot an image
@@ -29,10 +21,6 @@ def plot_image(x):
     img = cv2.merge([r, g, b])
     plt.imshow(img)
 
-# plot_image(img)
-
-# print(type(img))
-# img
 
 def plot_bounding_box(img, img_name, img_details):
     b, g, r = cv2.split(img)
@@ -48,5 +36,15 @@ def plot_bounding_box(img, img_name, img_details):
         ax.add_patch(rect)
     plt.show()
     
-    
+
+
+training_annotations = pd.read_csv('data/trainingset_annotations.csv')
+training_annotations.columns = [i.strip() for i in training_annotations.columns]
+
+img_name = training_annotations.sample(1)['image_name'].values[0]
+img_path = f'data/trainingset/{img_name}'
+img = cv2.imread(img_path, cv2.IMREAD_COLOR)
+img_details = training_annotations.query('image_name == @img_name')
+xmin = img_details['xmin']
+
 plot_bounding_box(img, img_name, training_annotations)
